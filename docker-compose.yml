@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+  nsqlookupd:
+    build:
+      context: ./nsqlookupd/
+  nsqd:
+    build:
+      context: ./nsqd/
+    depends_on:
+      - nsqlookupd
