@@ -1,0 +1,101 @@
+<!doctype html>
+
+<html lang="en">
+
+  <head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Big Bro</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+  </head>
+
+  <body>
+
+    <div id="app">
+
+      <!-- Navigation Bar -->
+      <nav class="navbar navbar-expand-xl navbar-light bg-light">
+        <a class="navbar-brand" href="#">Big Bro</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle Navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="navContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Live</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Archive</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Container -->
+      <div class="container">
+        <table class="table table-bordered">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Hash</th>
+              <th scope="col">Time</th>
+              <th scope="col">Address</th>
+              <th scope="col">Name</th>
+              <th scope="col">Type</th>
+              <th scope="col">Class</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(query, index) in queries">
+              <td scope="row">{{query.hash}}</th>
+              <td scope="row">{{query.time}}</th>
+              <td scope="row">{{query.address}}</th>
+              <td scope="row">{{query.name}}</th>
+              <td scope="row">{{query.type}}</th>
+              <td scope="row">{{query.class}}</th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <script>
+    var socket = io();
+    var vue = new Vue({
+      el: "#app",
+        data: function () {
+          return {
+            queries: [
+              {
+                hash: "a953d9a83a94ef94",
+                time: "5:30 PM",
+                address: "192.168.1.70",
+                name: "google.com",
+                type: "A",
+                class: "B"
+              }
+            ]
+          }
+        },
+        created: function() {
+          socket.on("addQuery", function(data) {
+            this.queries.push(data.message);
+          });
+        }
+    });
+    </script>
+
+  </body>
+
+</html>

@@ -9,3 +9,11 @@ services:
       context: ./nsqd/
     depends_on:
       - nsqlookupd
+  http:
+    build:
+      context: ./http/
+    ports:
+      - target: 80
+        published: 8080
+        protocol: tcp
+        mode: host
