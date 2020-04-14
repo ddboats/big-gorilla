@@ -1,14 +1,22 @@
 version: "3.7"
 
+networks:
+  main:
+    driver: bridge
+
 services:
   nsqlookupd:
     build:
       context: ./nsqlookupd/
+    networks:
+      - main
   nsqd:
     build:
       context: ./nsqd/
     depends_on:
       - nsqlookupd
+    networks:
+      - main
   dnsd:
     build:
       context: ./dnsd/
@@ -19,6 +27,8 @@ services:
         published: 1053
         protocol: udp
         mode: host
+    networks:
+      - main
   http:
     build:
       context: ./http/
@@ -27,9 +37,14 @@ services:
         published: 8080
         protocol: tcp
         mode: host
+    depends_on:
+      - ws
+    networks:
+      - main
   ws:
     build:
       context: ./ws/
     depends_on:
       - nsqd
-      - http
+    networks:
+      - main
