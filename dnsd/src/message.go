@@ -1,7 +1,10 @@
 package dnsd
 
 import (
+	"time"
 	"encoding/json"
+
+	"github.com/nsqio/go-nsq"
 )
 
 // TopicName defines which NSQ topic queries will be published to
@@ -16,8 +19,17 @@ func Publish(query Query) error {
 		return error1
 	}
 
-	// Publish query to NSQ
-	error2 := PluginProducer.Publish(TopicName, []byte(json))
+	// Handle the producer's transaction when it is complete
+	doneChannel := make(chan *nsq.ProducerTransaction)
+	go func() {
+		transaction := <-doneChannel
+		if transaction.Error != nil {
+			PluginLogger.Error(transaction.Error.Error())
+		}
+	}()
+
+	// Publish request to NSQ
+	error2 := PluginProducer.DeferredPublishAsync(TopicName, time.Second, []byte(json), doneChannel)
 	if error2 != nil {
 		return error2
 	}
