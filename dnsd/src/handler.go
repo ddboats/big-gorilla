@@ -5,12 +5,7 @@ import (
 
 	"github.com/coredns/coredns/plugin"
 	"github.com/miekg/dns"
-
-	clog "github.com/coredns/coredns/plugin/pkg/log"
 )
-
-// log is used to log messages from the plugin to CoreDNS
-var log = clog.NewWithPlugin(PluginName)
 
 // PluginHandler will handle incoming DNS requests
 type PluginHandler struct {
@@ -26,7 +21,7 @@ func (handler PluginHandler) ServeDNS(context context.Context, responseWriter dn
 
 		// There was an error so log it
 		if error1 != nil {
-			log.Error(error1.Error())
+			PluginLogger.Error(error1.Error())
 		}
 	}
 	// Proceed down the plugin chain

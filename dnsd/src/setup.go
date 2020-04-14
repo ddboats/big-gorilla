@@ -5,6 +5,7 @@ import (
 
 	"github.com/coredns/coredns/core/dnsserver"
 	"github.com/coredns/coredns/plugin"
+	clog "github.com/coredns/coredns/plugin/pkg/log"
 
 	"github.com/caddyserver/caddy"
 
@@ -13,6 +14,9 @@ import (
 
 // PluginName is the name of this plugin
 const PluginName string = "big-gorilla"
+
+// PluginLogger is used to log messages from the plugin to CoreDNS
+var PluginLogger = clog.NewWithPlugin(PluginName)
 
 // PluginProducer is the NSQ producer
 var PluginProducer *nsq.Producer = nil
