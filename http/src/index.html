@@ -74,25 +74,17 @@
     var socket = io();
     var vue = new Vue({
       el: "#app",
-        data: function () {
-          return {
-            queries: [
-              {
-                hash: "a953d9a83a94ef94",
-                time: "5:30 PM",
-                address: "192.168.1.70",
-                name: "google.com",
-                type: "A",
-                class: "B"
-              }
-            ]
-          }
-        },
-        created: function() {
-          socket.on("AddQuery", function(data) {
-            this.queries.push(data.message);
-          });
+      data: function() {
+        return {
+          queries: []
         }
+      },
+      created: function() {
+        realThis = this;
+        socket.on("AddQuery", function(data) {
+          realThis.queries.push(JSON.parse(data));
+        });
+      }
     });
     </script>
 
