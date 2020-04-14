@@ -11,8 +11,11 @@ WORKDIR /work/
 # Add CoreDNS
 RUN git clone https://github.com/coredns/coredns ./
 
-# Download this repository as a dependency
-RUN go get github.com/ddboats/big-gorilla@master
+# Copy go project
+COPY ./src /project
+
+# Tell go where to find the project when CoreDNS imports it
+RUN go mod edit -replace github.com/ddboats/big-gorilla/dnsd/src=/project/
 
 # Add plugin configuration file
 COPY plugin.cfg ./
