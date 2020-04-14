@@ -14,7 +14,7 @@ var log = clog.NewWithPlugin(PluginName)
 
 // PluginHandler will handle incoming DNS requests
 type PluginHandler struct {
-	plugin.Handler
+	Next plugin.Handler
 }
 
 // ServeDNS will handle each DNS request
@@ -30,7 +30,7 @@ func (handler PluginHandler) ServeDNS(context context.Context, responseWriter dn
 		}
 	}
 	// Proceed down the plugin chain
-	return plugin.NextOrFailure(PluginName, handler, context, responseWriter, message)
+	return plugin.NextOrFailure(PluginName, handler.Next, context, responseWriter, message)
 }
 
 // Name will return the plugin's name

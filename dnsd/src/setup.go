@@ -52,7 +52,7 @@ func setup(controller *caddy.Controller) error {
 
 	// Tell CoreDNS to use this plugin
 	dnsserver.GetConfig(controller).AddPlugin(func(handler plugin.Handler) plugin.Handler {
-		return PluginHandler{}
+		return PluginHandler{Next: handler}
 	})
 
 	// Return no errors
