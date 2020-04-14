@@ -12,7 +12,7 @@ WORKDIR /work/
 RUN git clone https://github.com/coredns/coredns ./
 
 # Download this repository as a dependency
-RUN go get github.com/ddboats/big-gorilla
+RUN go get github.com/ddboats/big-gorilla@master
 
 # Add plugin configuration file
 COPY plugin.cfg ./
@@ -25,9 +25,8 @@ RUN go build -ldflags="-s -w"
 
 # Use scratch
 # Final image used for runtime
-FROM scratch as RUNTIME
+FROM alpine:3.11.5 as RUNTIME
 
-# Define working directory
 WORKDIR /
 
 # Copy built CoreDNS binary to image
