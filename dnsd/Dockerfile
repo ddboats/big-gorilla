@@ -24,9 +24,10 @@ COPY plugin.cfg ./
 RUN go generate
 
 # Build project and shrink
-RUN go build -ldflags="-s -w"
+RUN go build -ldflags="-s -w" &&\
+    upx ./coredns
 
-# Use scratch
+# Use Alpine version 3.11.5
 # Final image used for runtime
 FROM alpine:3.11.5 as RUNTIME
 
