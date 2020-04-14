@@ -23,8 +23,8 @@ type Query struct {
 	Time int64 `json:"time"`
 	Address string `json:"address"`
 	Name string `json:"name"`
-	Type uint16 `json:"type"`
-	Class uint16 `json:"class"`
+	Type string `json:"type"`
+	Class string `json:"class"`
 }
 
 // CreateQuery will create a new query object
@@ -32,9 +32,9 @@ func CreateQuery(responseWriter dns.ResponseWriter, question dns.Question) Query
 	query := Query{}
 	query.Time = int64(time.Now().Unix())
 	query.Address = strings.Split(responseWriter.RemoteAddr().String(), ":")[0]
-	query.Name = question.Name
-	query.Type = question.Qtype
-	query.Class = question.Qclass
+	query.Name = strings.TrimSuffix(question.Name, ".")
+	query.Type = ConvertType(question.Qtype)
+	query.Class = ConvertClass(question.Qclass)
 	query.Hash = hex.EncodeToString(toHash(query))
 	return query
 }
