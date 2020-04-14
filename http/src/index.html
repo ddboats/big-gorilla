@@ -43,29 +43,45 @@
       </nav>
 
       <!-- Container -->
-      <div class="container">
-        <table class="table table-bordered">
-          <thead class="thead-light">
-            <tr>
-              <th scope="col">Hash</th>
-              <th scope="col">Time</th>
-              <th scope="col">Address</th>
-              <th scope="col">Name</th>
-              <th scope="col">Type</th>
-              <th scope="col">Class</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(query, index) in queries">
-              <td scope="row">{{query.hash}}</th>
-              <td scope="row">{{query.time}}</th>
-              <td scope="row">{{query.address}}</th>
-              <td scope="row">{{query.name}}</th>
-              <td scope="row">{{query.type}}</th>
-              <td scope="row">{{query.class}}</th>
-            </tr>
-          </tbody>
-        </table>
+      <div class="container m-t-4">
+        <div class="row justify-content-center" v-for="(client, index) in clients">
+          <div class="col-12">
+            <button class="btn btn-primary btn-lg btn-block" type="button" data-toggle="collapse" v-bind:data-target="'#client-' + index" aria-expanded="false" aria-controls="collapseClient">
+            {{client.address}}
+            </button>
+            <div class="collapse p-lr-2" v-bind:id="'client-' + index">
+
+              <div class="row justify-content-center" v-for="(indice, index) in client.indices">
+                <div class="col-12">
+                 <button class="btn btn-secondary btn-lg btn-block" type="button" data-toggle="collapse" v-bind:data-target="'#indice-' + index" aria-expanded="false" aria-controls="collapseQuery">
+                   {{indice.time}}
+                 </button>
+                 <div class="collapse" v-bind:id="'indice-' + index">
+                  <table class="table table-bordered">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col">Hash</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Class</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(query, index) in indice.queries">
+                        <td scope="row">{{query.hash}}</th>
+                        <td scope="row">{{query.name}}</th>
+                        <td scope="row">{{query.type}}</th>
+                        <td scope="row">{{query.class}}</th>
+                      </tr>
+                    </tbody>
+                  </table>
+                 </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -76,13 +92,47 @@
       el: "#app",
       data: function() {
         return {
-          queries: []
+          clients: [],
         }
       },
       created: function() {
         realThis = this;
         socket.on("AddQuery", function(data) {
-          realThis.queries.push(JSON.parse(data));
+          query = JSON.parse(data);
+          var found = false;
+          for(var client of realThis.clients) {
+            if (client.address === query.address) {
+              var otherFound = false;
+              for(var index of client.indices) {
+                if (index.time === query.time) {
+                  index.queries.unshift(query);
+                  otherFound = true;
+                }
+              }
+              if (!otherFound) {
+                client.indices.unshift({
+                  time: query.time,
+                  queries: [
+                    query,
+                  ],
+                });
+              }
+              found = true;
+            }
+          }
+          if (!found) {
+            realThis.clients.unshift({
+              address: query.address,
+              indices: [
+                {
+                  time: query.time,
+                  queries: [
+                    query,
+                  ],
+                },
+              ],
+            })
+          }
         });
       }
     });
