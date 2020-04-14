@@ -16,8 +16,8 @@ type PluginHandler struct {
 func (handler PluginHandler) ServeDNS(context context.Context, responseWriter dns.ResponseWriter, message *dns.Msg) (int, error) {
 	// Iterate through each DNS question the client has and add it to NSQ
 	for _, question := range message.Question {
-		request := CreateRequest(responseWriter, question)
-		error1 := Publish(request)
+		query := CreateQuery(responseWriter, question)
+		error1 := Publish(query)
 
 		// There was an error so log it
 		if error1 != nil {
