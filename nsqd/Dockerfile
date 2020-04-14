@@ -5,4 +5,4 @@ FROM nsqio/nsq:v1.2.0
 EXPOSE 4150 4151
 
 # Start nsqd
-CMD [ "/nsqd", "-broadcast-address", "localhost", "-lookupd-tcp-address", "nsqlookupd" ]
+CMD [ "/nsqd", "-lookupd-tcp-address", "nsqlookupd:4160" ]

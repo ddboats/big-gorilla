@@ -5,4 +5,4 @@ FROM nsqio/nsq:v1.2.0
 EXPOSE 4160 4161
 
 # Start nsqlookupd
-CMD [ "/nsqlookupd", "-broadcast-address", "localhost" ]
+CMD [ "/nsqlookupd" ]
