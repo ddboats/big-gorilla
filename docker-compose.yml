@@ -27,3 +27,9 @@ services:
         published: 8080
         protocol: tcp
         mode: host
+  ws:
+    build:
+      context: ./ws/
+    depends_on:
+      - nsqd
+      - http
