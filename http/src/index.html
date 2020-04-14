@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Big Bro</title>
+    <title>Big Gorilla</title>
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -26,7 +26,7 @@
 
       <!-- Navigation Bar -->
       <nav class="navbar navbar-expand-xl navbar-light bg-light">
-        <a class="navbar-brand" href="#">Big Bro</a>
+        <a class="navbar-brand" href="#">Big Gorilla</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle Navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -89,7 +89,7 @@
           }
         },
         created: function() {
-          socket.on("addQuery", function(data) {
+          socket.on("AddQuery", function(data) {
             this.queries.push(data.message);
           });
         }
