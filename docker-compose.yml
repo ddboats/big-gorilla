@@ -9,6 +9,16 @@ services:
       context: ./nsqd/
     depends_on:
       - nsqlookupd
+  dnsd:
+    build:
+      context: ./dnsd/
+    depends_on:
+      - nsqd
+    ports:
+      - target: 53
+        published: 1053
+        protocol: udp
+        mode: host
   http:
     build:
       context: ./http/
