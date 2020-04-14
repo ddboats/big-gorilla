@@ -15,7 +15,7 @@ RUN git clone https://github.com/coredns/coredns ./
 COPY ./src /project
 
 # Tell go where to find the project when CoreDNS imports it
-RUN go mod edit -replace github.com/ddboats/big-gorilla/dnsd/src=/project/
+RUN go mod edit -replace github.com/ddboats/big-gorilla=/project/
 
 # Add plugin configuration file
 COPY plugin.cfg ./
