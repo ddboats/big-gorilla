@@ -105,7 +105,7 @@
           minutes = date.minute;
           pmam = hours >= 12 ? 'PM' : 'AM';
           hours = hours == 0 ? 12 : hours > 12 ? hours - 12 : hours;
-          query.time = `${hours}:${minutes}`;
+          query.time = `${hours}:${minutes < 10 ? "0" : ""}${minutes} ${pmam}`;
 
           var found = false;
           for(var client of realThis.clients) {
