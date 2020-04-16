@@ -24,7 +24,7 @@ services:
       - nsqd
     ports:
       - target: 53
-        published: 1053
+        published: 53
         protocol: udp
         mode: host
     networks:
@@ -34,7 +34,7 @@ services:
       context: ./http/
     ports:
       - target: 80
-        published: 8080
+        published: 80
         protocol: tcp
         mode: host
     depends_on:
